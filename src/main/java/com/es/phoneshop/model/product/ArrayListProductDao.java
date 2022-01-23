@@ -4,19 +4,24 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
     private List<Product> productList;
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
-    private long id=1;
+    private ReadWriteLock lock;
+    private long maxID;
 
     public ArrayListProductDao(){
         productList =new ArrayList<>();
+        lock = new ReentrantReadWriteLock();
+        maxID=1;
         getSampleProducts();
+    }
+
+    public long getMaxID(){
+        return maxID;
     }
 
     @Override
@@ -50,16 +55,34 @@ public class ArrayListProductDao implements ProductDao {
         lock.writeLock().lock();
         try {
             if (product.getId() == null) {
-                product.setId(id++);
+                product.setId(maxID++);
                 productList.add(product);
-            } else {
-                if (product.getId() <= this.id) {
-                    productList.set(Math.toIntExact(product.getId()) - 1, product);
-                } else {
-                    product.setId(id++);
-                    productList.add(product);
-                }
+                return;
             }
+            if(product.equals(productList.get(Math.toIntExact(product.getId())))) {
+            return;
+            }
+            if (product.getId() <= this.maxID && product.getId() >0) {
+                productList.set(Math.toIntExact(product.getId()) - 1, product);
+            } else {
+                product.setId(maxID++);
+                productList.add(product);
+            }
+        }finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public void delete(Long id) throws ProductNotFoundException {
+        lock.writeLock().lock();
+        try {
+            if (id != null && id<=maxID && id>0) {
+                productList.remove(Math.toIntExact(id) - 1);
+                rewriteID(id);
+                --this.maxID;
+            }
+            else throw new ProductNotFoundException();
         }finally {
             lock.writeLock().unlock();
         }
@@ -73,20 +96,6 @@ public class ArrayListProductDao implements ProductDao {
                     .forEach(product -> product.setId(product.getId() - 1));
         }finally {
             lock.writeLock().lock();
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        lock.writeLock().lock();
-        try {
-            if (id != null) {
-                productList.remove(Math.toIntExact(id) - 1);
-            }
-            rewriteID(id);
-            --this.id;
-        }finally {
-            lock.writeLock().unlock();
         }
     }
 
