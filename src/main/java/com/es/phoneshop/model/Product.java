@@ -1,4 +1,4 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.model;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -89,9 +89,11 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return stock==product.stock && id.equals(product.id)
-               && code.equals(product.code) && description.equals(product.description)
-               && price.equals(product.price) && currency.equals(product.currency)
-               && imageUrl.equals(product.imageUrl);
+                && code.equals(product.code)
+                && description.equals(product.description)
+                && price.equals(product.price)
+                && currency.equals(product.currency)
+                && imageUrl.equals(product.imageUrl);
     }
 
     @Override

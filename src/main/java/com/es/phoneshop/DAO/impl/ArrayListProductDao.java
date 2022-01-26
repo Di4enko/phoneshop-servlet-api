@@ -1,5 +1,8 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.DAO.impl;
 
+import com.es.phoneshop.DAO.ProductDao;
+import com.es.phoneshop.model.Product;
+import com.es.phoneshop.exception.ProductNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -13,10 +16,10 @@ public class ArrayListProductDao implements ProductDao {
     private ReadWriteLock lock;
     private long maxID;
 
-    public ArrayListProductDao(){
-        productList =new ArrayList<>();
+    public ArrayListProductDao() {
+        productList = new ArrayList<>();
         lock = new ReentrantReadWriteLock();
-        maxID=1;
+        maxID = 1;
         getSampleProducts();
     }
 
@@ -27,12 +30,15 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public Product getProduct(Long id) throws ProductNotFoundException {
         lock.readLock().lock();
+        if (id == null) {
+            throw new  NullPointerException("ID not set");
+        }
         try {
             return productList.stream()
                     .filter(product -> id.equals(product.getId()))
                     .findAny()
-                    .orElseThrow(ProductNotFoundException::new);
-        }finally {
+                    .orElseThrow(() -> new ProductNotFoundException("Product with this ID does not exist"));
+        } finally {
             lock.readLock().unlock();
         }
     }
@@ -45,7 +51,7 @@ public class ArrayListProductDao implements ProductDao {
                     .filter(product -> product.getPrice() != null)
                     .filter(product -> product.getStock() > 0)
                     .collect(Collectors.toList());
-        }finally {
+        } finally {
             lock.readLock().unlock();
         }
     }
@@ -57,18 +63,10 @@ public class ArrayListProductDao implements ProductDao {
             if (product.getId() == null) {
                 product.setId(maxID++);
                 productList.add(product);
-                return;
+            } else if (!product.equals(getProduct(product.getId()))) {
+                productList.set(Math.toIntExact(product.getId()-1), product);
             }
-            if(product.equals(productList.get(Math.toIntExact(product.getId())))) {
-            return;
-            }
-            if (product.getId() <= this.maxID && product.getId() >0) {
-                productList.set(Math.toIntExact(product.getId()) - 1, product);
-            } else {
-                product.setId(maxID++);
-                productList.add(product);
-            }
-        }finally {
+        } finally {
             lock.writeLock().unlock();
         }
     }
@@ -76,30 +74,27 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public void delete(Long id) throws ProductNotFoundException {
         lock.writeLock().lock();
+        if (id == null) {
+            throw new NullPointerException("ID not set");
+        }
         try {
-            if (id != null && id<=maxID && id>0) {
+            if (id > 0 && id <= maxID) {
                 productList.remove(Math.toIntExact(id) - 1);
                 rewriteID(id);
                 --this.maxID;
-            }
-            else throw new ProductNotFoundException();
-        }finally {
+            } else {throw new ProductNotFoundException("Product with this ID does not exist");}
+        } finally {
             lock.writeLock().unlock();
         }
     }
 
-    private void rewriteID(Long id){
-        lock.writeLock().lock();
-        try {
-            productList.stream()
-                    .filter(product -> product.getId() > id)
-                    .forEach(product -> product.setId(product.getId() - 1));
-        }finally {
-            lock.writeLock().lock();
-        }
+    private void rewriteID(Long id) {
+    productList.stream()
+            .filter(product -> product.getId() > id)
+            .forEach(product -> product.setId(product.getId() - 1));
     }
 
-    private void getSampleProducts(){
+    private void getSampleProducts() {
         Currency usd = Currency.getInstance("USD");
         save(new Product("sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
         save(new Product("sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg"));
