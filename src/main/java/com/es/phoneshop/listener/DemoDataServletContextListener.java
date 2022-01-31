@@ -20,7 +20,7 @@ public class DemoDataServletContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         boolean context = Boolean.parseBoolean(servletContextEvent.getServletContext().getInitParameter("insertDemoData"));
-        if(context) {
+        if (context) {
             getSampleProducts();
             getHistory();
         }
@@ -51,51 +51,77 @@ public class DemoDataServletContextListener implements ServletContextListener {
     private void getHistory() {
         initializationHistory();
         int size = priceHistory.size();
-        for(int i=1; i <= size; i++) {
+        for (int i = 1; i <= size; i++) {
             productDao.getProduct((long) i).setPriceHistory(priceHistory.get(productDao.getProduct((long) i).getCode()));
         }
     }
 
     private void initializationHistory() {
         priceHistory = new HashMap<>();
-        List<PriceHistory> sgs = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(90)),
-                new PriceHistory("15 Dec 2021",new BigDecimal(105) ), new PriceHistory("15 Jan 2022", new BigDecimal(98)));
+        List<PriceHistory> sgs = new LinkedList<>();
+        sgs.add(new PriceHistory("15 Nov 2021", new BigDecimal(90)));
+        sgs.add(new PriceHistory("15 Dec 2021",new BigDecimal(105) ));
+        sgs.add(new PriceHistory("15 Jan 2022", new BigDecimal(98)));
         priceHistory.put("sgs", sgs);
-        List<PriceHistory> sgs2 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(190)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(220)), new PriceHistory("15 Jan 2022", new BigDecimal(213)));
+        List<PriceHistory> sgs2 = new LinkedList<>();
+        sgs2.add(new PriceHistory("15 Nov 2021", new BigDecimal(190)));
+        sgs2.add(new PriceHistory("15 Dec 2021", new BigDecimal(220)));
+        sgs2.add(new PriceHistory("15 Jan 2022", new BigDecimal(213)));
         priceHistory.put("sgs2", sgs2);
-        List<PriceHistory> sgs3 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(286)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(344)), new PriceHistory("15 Jan 2022", new BigDecimal(315)));
+        List<PriceHistory> sgs3 = new LinkedList<>();
+        sgs3.add(new PriceHistory("15 Nov 2021", new BigDecimal(286)));
+        sgs3.add(new PriceHistory("15 Dec 2021", new BigDecimal(344)));
+        sgs3.add(new PriceHistory("15 Jan 2022", new BigDecimal(315)));
         priceHistory.put("sgs3", sgs3);
-        List<PriceHistory> iphone = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(185)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(236)), new PriceHistory("15 Jan 2022", new BigDecimal(220)));
+        List<PriceHistory> iphone = new LinkedList<>();
+        iphone.add(new PriceHistory("15 Nov 2021", new BigDecimal(185)));
+        iphone.add(new PriceHistory("15 Jan 2022", new BigDecimal(220)));
+        iphone.add(new PriceHistory("15 Dec 2021", new BigDecimal(236)));
         priceHistory.put("iphone", iphone);
-        List<PriceHistory> iphone6 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(980)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(960)), new PriceHistory("15 Jan 2022", new BigDecimal(1070)));
+        List<PriceHistory> iphone6 = new LinkedList<>();
+        iphone6.add(new PriceHistory("15 Nov 2021", new BigDecimal(980)));
+        iphone6.add(new PriceHistory("15 Dec 2021", new BigDecimal(960)));
+        iphone6.add(new PriceHistory("15 Jan 2022", new BigDecimal(1070)));
         priceHistory.put("iphone6", iphone6);
-        List<PriceHistory> htces4g = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(300)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(330)), new PriceHistory("15 Jan 2022", new BigDecimal(330)));
+        List<PriceHistory> htces4g = new LinkedList<>();
+        htces4g.add(new PriceHistory("15 Nov 2021", new BigDecimal(300)));
+        htces4g.add(new PriceHistory("15 Dec 2021", new BigDecimal(330)));
+        htces4g.add(new PriceHistory("15 Jan 2022", new BigDecimal(330)));
         priceHistory.put("htces4g", htces4g);
-        List<PriceHistory> sec901 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(440)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(450)), new PriceHistory("15 Jan 2022", new BigDecimal(420)));
+        List<PriceHistory> sec901 = new LinkedList<>();
+        sec901.add(new PriceHistory("15 Nov 2021", new BigDecimal(440)));
+        sec901.add(new PriceHistory("15 Dec 2021", new BigDecimal(450)));
+        sec901.add(new PriceHistory("15 Jan 2022", new BigDecimal(420)));
         priceHistory.put("sec901", sec901);
-        List<PriceHistory> xperiaxz = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(117)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(100)), new PriceHistory("15 Jan 2022", new BigDecimal(130)));
+        List<PriceHistory> xperiaxz = new LinkedList<>();
+        xperiaxz.add(new PriceHistory("15 Nov 2021", new BigDecimal(117)));
+        xperiaxz.add(new PriceHistory("15 Dec 2021", new BigDecimal(100)));
+        xperiaxz.add(new PriceHistory("15 Jan 2022", new BigDecimal(130)));
         priceHistory.put("xperiaxz", xperiaxz);
-        List<PriceHistory> nokia3310 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(70)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(70)), new PriceHistory("15 Jan 2022", new BigDecimal(85)));
+        List<PriceHistory> nokia3310 = new LinkedList<>();
+        nokia3310.add(new PriceHistory("15 Nov 2021", new BigDecimal(70)));
+        nokia3310.add(new PriceHistory("15 Dec 2021", new BigDecimal(70)));
+        nokia3310.add(new PriceHistory("15 Jan 2022", new BigDecimal(85)));
         priceHistory.put("nokia3310", nokia3310);
-        List<PriceHistory> palmp = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(185)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(200)), new PriceHistory("15 Jan 2022", new BigDecimal(150)));
+        List<PriceHistory> palmp = new LinkedList<>();
+        palmp.add(new PriceHistory("15 Nov 2021", new BigDecimal(185)));
+        palmp.add(new PriceHistory("15 Dec 2021", new BigDecimal(200)));
+        palmp.add(new PriceHistory("15 Jan 2022", new BigDecimal(150)));
         priceHistory.put("palmp", palmp);
-        List<PriceHistory> simc56 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(80)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(90)), new PriceHistory("15 Jan 2022", new BigDecimal(100)));
+        List<PriceHistory> simc56 = new LinkedList<>();
+        simc56.add(new PriceHistory("15 Nov 2021", new BigDecimal(80)));
+        simc56.add(new PriceHistory("15 Dec 2021", new BigDecimal(90)));
+        simc56.add(new PriceHistory("15 Jan 2022", new BigDecimal(100)));
         priceHistory.put("simc56", simc56);
-        List<PriceHistory> simc61 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(80)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(90)), new PriceHistory("15 Jan 2022", new BigDecimal(750)));
+        List<PriceHistory> simc61 = new LinkedList<>();
+        simc61.add(new PriceHistory("15 Nov 2021", new BigDecimal(80)));
+        simc61.add(new PriceHistory("15 Dec 2021", new BigDecimal(90)));
+        simc61.add(new PriceHistory("15 Jan 2022", new BigDecimal(750)));
         priceHistory.put("simc61", simc61);
-        List<PriceHistory> simsxg75 = Arrays.asList(new PriceHistory("15 Nov 2021", new BigDecimal(160)),
-                new PriceHistory("15 Dec 2021", new BigDecimal(145)), new PriceHistory("15 Jan 2022", new BigDecimal(160)));
+        List<PriceHistory> simsxg75 = new LinkedList<>();
+        simsxg75.add(new PriceHistory("15 Nov 2021", new BigDecimal(160)));
+        simsxg75.add(new PriceHistory("15 Dec 2021", new BigDecimal(145)));
+        simsxg75.add(new PriceHistory("15 Jan 2022", new BigDecimal(160)));
         priceHistory.put("simsxg75", simsxg75);
     }
 }

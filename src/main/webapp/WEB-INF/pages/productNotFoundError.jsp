@@ -5,7 +5,7 @@
 
 
 <tags:master pageTitle="Product not found">
-    <h1>Product not found</h1>
+    <h1>Product with id ${param.id} not found</h1>
     <p>
         <a href = "${pageContext.servletContext.contextPath}/products">Click to return to the home page</a>
     </p>
