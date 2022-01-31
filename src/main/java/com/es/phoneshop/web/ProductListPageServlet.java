@@ -2,6 +2,9 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.DAO.ProductDao;
+import com.es.phoneshop.web.parameter.SortField;
+import com.es.phoneshop.web.parameter.SortOrder;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +18,15 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        products = new ArrayListProductDao();
+        products = ArrayListProductDao.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", products.findProducts());
+        String query = request.getParameter("query");
+        SortField sortField = request.getParameter("sort") != null ? SortField.valueOf(request.getParameter("sort")) : SortField.def;
+        SortOrder sortOrder = request.getParameter("order") != null ? SortOrder.valueOf(request.getParameter("order")) : SortOrder.def;
+        request.setAttribute("products", products.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 

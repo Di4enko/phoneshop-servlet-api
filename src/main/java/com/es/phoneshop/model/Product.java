@@ -2,6 +2,8 @@ package com.es.phoneshop.model;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Product {
@@ -14,6 +16,7 @@ public class Product {
     private Currency currency;
     private int stock;
     private String imageUrl;
+    private List<PriceHistory> priceHistory;
 
     public Product() {
     }
@@ -25,6 +28,7 @@ public class Product {
         this.currency = currency;
         this.stock = stock;
         this.imageUrl = imageUrl;
+        priceHistory = new LinkedList<>();
     }
 
     public Long getId() {
@@ -83,12 +87,20 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public List<PriceHistory> getPriceHistory() {
+        return priceHistory;
+    }
+
+    public void setPriceHistory(List<PriceHistory> priceHistory){
+        this.priceHistory = priceHistory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return stock==product.stock && id.equals(product.id)
+        return stock == product.stock && id.equals(product.id)
                 && code.equals(product.code)
                 && description.equals(product.description)
                 && price.equals(product.price)
