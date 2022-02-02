@@ -1,5 +1,6 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ attribute name="pageTitle" required="true" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
@@ -8,17 +9,10 @@
   <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
 </head>
 <body class="product-list">
-  <header>
-    <a href="${pageContext.servletContext.contextPath}">
-      <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
-      PhoneShop
-    </a>
-  </header>
+  <tags:header pageTitle="${pageTitle}" />
   <main>
     <jsp:doBody/>
   </main>
-  <p>
-    (c) Expert-Soft
-  </p>
+  <tags:footer />
 </body>
 </html>

@@ -3,8 +3,8 @@ package com.es.phoneshop.model;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.ProductNotFoundException;
-import com.es.phoneshop.web.parameter.SortField;
-import com.es.phoneshop.web.parameter.SortOrder;
+import com.es.phoneshop.enums.SortField;
+import com.es.phoneshop.enums.SortOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -49,32 +49,32 @@ public class ArrayListProductDaoTest
 
     @Test
     public void findProductsWithSortDescriptionTest() {
-        SortField field = SortField.description;
+        SortField field = SortField.DESCRIPTION;
         List<String> ascTest = new LinkedList<>();
         productDao.findProducts(null, null, null).forEach(e -> ascTest.add(e.getDescription()));
         ascTest.sort(String::compareTo);
         List<String> ascResult = new LinkedList<>();
-        productDao.findProducts(null, field, SortOrder.asc).forEach(e -> ascResult.add(e.getDescription()));
+        productDao.findProducts(null, field, SortOrder.ASC).forEach(e -> ascResult.add(e.getDescription()));
         List<String> descTest = new LinkedList<>(ascTest);
         descTest.sort(Comparator.reverseOrder());
         List<String> descResult = new LinkedList<>();
-        productDao.findProducts(null, field, SortOrder.desc).forEach(e -> descResult.add(e.getDescription()));
+        productDao.findProducts(null, field, SortOrder.DESC).forEach(e -> descResult.add(e.getDescription()));
         Assertions.assertEquals(ascTest, ascResult);
         Assertions.assertEquals(descTest, descResult);
     }
 
     @Test
     public void findProductsWithSortPriceTest() {
-        SortField field = SortField.price;
+        SortField field = SortField.PRICE;
         List<BigDecimal> ascTest = new LinkedList<>();
         productDao.findProducts(null, null, null).forEach(e -> ascTest.add(e.getPrice()));
         Collections.sort(ascTest);
         List<BigDecimal> ascResult = new LinkedList<>();
-        productDao.findProducts(null, field, SortOrder.asc).forEach(e -> ascResult.add(e.getPrice()));
+        productDao.findProducts(null, field, SortOrder.ASC).forEach(e -> ascResult.add(e.getPrice()));
         List<BigDecimal> descTest = new LinkedList<>(ascTest);
         descTest.sort(Comparator.reverseOrder());
         List<BigDecimal> descResult = new LinkedList<>();
-        productDao.findProducts(null, field, SortOrder.desc).forEach(e -> descResult.add(e.getPrice()));
+        productDao.findProducts(null, field, SortOrder.DESC).forEach(e -> descResult.add(e.getPrice()));
         Assertions.assertEquals(ascTest, ascResult);
         Assertions.assertEquals(descTest, descResult);
     }

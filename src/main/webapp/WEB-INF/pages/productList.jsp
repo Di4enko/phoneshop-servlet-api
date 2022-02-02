@@ -18,11 +18,11 @@
         <td align = center>Image</td>
         <td align = center>
             Description
-            <tags:sortLink sort = "description"/>
+            <tags:sortLink sort = "DESCRIPTION"/>
         </td>
         <td align = center>
             Price
-            <tags:sortLink sort = "price"/>
+            <tags:sortLink sort = "PRICE"/>
         </td>
       </tr>
     </thead>
@@ -32,10 +32,10 @@
           <img class="product-tile" src="${product.imageUrl}">
         </td>
         <td>
-            <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/${product.id}?id=${product.id}">${product.description}</a>
+            <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/${product.id}">${product.description}</a>
         </td>
         <td class="price">
-          <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/pricehistory/${product.id}?id=${product.id}">
+          <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/pricehistory/${product.id}">
           <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a>
         </td>
       </tr>

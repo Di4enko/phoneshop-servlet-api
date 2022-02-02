@@ -3,8 +3,8 @@ package com.es.phoneshop.DAO.impl;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.model.Product;
-import com.es.phoneshop.web.parameter.SortField;
-import com.es.phoneshop.web.parameter.SortOrder;
+import com.es.phoneshop.enums.SortField;
+import com.es.phoneshop.enums.SortOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -42,7 +42,7 @@ public class ArrayListProductDao implements ProductDao {
     public Product getProduct(Long id) throws ProductNotFoundException {
         lock.readLock().lock();
         if (id == null) {
-            throw new  NullPointerException("ID not set");
+            throw new  IllegalArgumentException("ID not set");
         }
         try {
             return productList.stream()
@@ -80,15 +80,15 @@ public class ArrayListProductDao implements ProductDao {
 
     private Comparator<Product> comparator(SortField sortField, SortOrder sortOrder) {
         Comparator<Product> comparator= Comparator.comparing(product -> {
-            if (SortField.description == sortField) {
+            if (SortField.DESCRIPTION == sortField) {
                 return (Comparable) product.getDescription();
-            } else if (SortField.price == sortField) {
+            } else if (SortField.PRICE == sortField) {
                 return (Comparable) product.getPrice();
             } else {
                 return (Comparable) product.getClass().toString();
             }
         });
-        if (SortOrder.asc == sortOrder || SortOrder.def == sortOrder) {
+        if (SortOrder.ASC == sortOrder || SortOrder.DEFAULT == sortOrder) {
             return comparator;
         } else {
             return comparator.reversed();
@@ -114,7 +114,7 @@ public class ArrayListProductDao implements ProductDao {
     public void delete(Long id) throws ProductNotFoundException {
         lock.writeLock().lock();
         if (id == null) {
-            throw new NullPointerException("ID not set");
+            throw new IllegalArgumentException("ID not set");
         }
         try {
             if (id > 0 && id <= maxID) {
