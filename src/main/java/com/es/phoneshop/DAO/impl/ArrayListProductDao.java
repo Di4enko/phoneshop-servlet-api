@@ -2,7 +2,7 @@ package com.es.phoneshop.DAO.impl;
 
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.exception.ProductNotFoundException;
-import com.es.phoneshop.model.Product;
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
 import java.util.ArrayList;

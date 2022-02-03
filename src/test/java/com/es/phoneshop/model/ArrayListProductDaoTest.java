@@ -5,6 +5,7 @@ import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
+import com.es.phoneshop.model.product.Product;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
