@@ -4,6 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="products" type="java.util.ArrayList" scope="request"/>
+<jsp:useBean id="recentlyViewed" type="com.es.phoneshop.model.browsingHistory.BrowsingHistory" scope="request"/>
 <tags:master pageTitle="Product List">
   <p>
     Welcome to Expert-Soft training!
@@ -40,4 +41,24 @@
         </td>
       </tr>
     </c:forEach>
+  </table>
+  <p><h3>Recently viewed:</h3></p>
+  <p>
+    <c:forEach var="item" items="${recentlyViewed.browsingHistory}">
+        <c:if test="${not empty item}">
+          <div class="nav">
+            <div class="border" align = center>
+                <img class="product-tile" src="${item.imageUrl}">
+                <p>
+                <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/${item.id}">${item.description}</a>
+                </p>
+                <p>
+                <class="price">
+                <fmt:formatNumber value="${item.price}" type="currency" currencySymbol="${item.currency.symbol}"/>
+                </p>
+            </div>
+          </div>
+        </c:if>
+    </c:forEach>
+  </p>
 </tags:master>

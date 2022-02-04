@@ -3,6 +3,8 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.OutOfStockException;
+import com.es.phoneshop.model.browsingHistory.BrowsingHistoryService;
+import com.es.phoneshop.model.browsingHistory.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.CartServiceImpl;
@@ -19,17 +21,20 @@ import java.text.ParseException;
 public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
     private CartService cartService;
+    private BrowsingHistoryService browsingHistory;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         productDao = ArrayListProductDao.getInstance();
         cartService = CartServiceImpl.getInstance();
+        browsingHistory = BrowsingHistoryServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productID = parseProductID(request);
+        browsingHistory.addProduct(browsingHistory.getBrowsingHistory(request),productDao.getProduct(productID));
         request.setAttribute("product", productDao.getProduct(productID));
         request.setAttribute("cart", cartService.getCart(request));
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
