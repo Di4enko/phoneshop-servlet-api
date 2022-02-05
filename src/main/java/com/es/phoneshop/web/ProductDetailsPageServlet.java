@@ -34,7 +34,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productID = parseProductID(request);
-        browsingHistory.addProduct(browsingHistory.getBrowsingHistory(request),productDao.getProduct(productID));
+        browsingHistory.add(browsingHistory.getBrowsingHistory(request),productDao.getProduct(productID));
         request.setAttribute("product", productDao.getProduct(productID));
         request.setAttribute("cart", cartService.getCart(request));
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
@@ -58,8 +58,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
             doGet(request,response);
         }
     }
-
-
 
     private long parseProductID(HttpServletRequest request) {
         long productID = Long.parseLong(request.getPathInfo().substring(1));

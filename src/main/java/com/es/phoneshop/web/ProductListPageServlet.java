@@ -16,13 +16,13 @@ import java.io.IOException;
 
 public class ProductListPageServlet extends HttpServlet {
     private ProductDao products;
-    private BrowsingHistoryService browsingHistory;
+    private BrowsingHistoryService browsingHistoryService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         products = ArrayListProductDao.getInstance();
-        browsingHistory = BrowsingHistoryServiceImpl.getInstance();
+        browsingHistoryService = BrowsingHistoryServiceImpl.getInstance();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ProductListPageServlet extends HttpServlet {
         String query = request.getParameter("query");
         SortField sortField = request.getParameter("sort") != null ? SortField.valueOf(request.getParameter("sort")) : SortField.DEFAULT;
         SortOrder sortOrder = request.getParameter("order") != null ? SortOrder.valueOf(request.getParameter("order")) : SortOrder.DEFAULT;
-        request.setAttribute("recentlyViewed", browsingHistory.getBrowsingHistory(request));
+        request.setAttribute("recentlyViewed", browsingHistoryService.getBrowsingHistory(request));
         request.setAttribute("products", products.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }

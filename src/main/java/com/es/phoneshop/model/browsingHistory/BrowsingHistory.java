@@ -6,35 +6,35 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class BrowsingHistory {
-    private Product[] browsingHistory;
+    private Product[] recentlyViewed;
     private int maxHistorySize = 3;
     private int currentHistorySize;
 
     public BrowsingHistory() {
         currentHistorySize = 0;
-        browsingHistory = new Product[maxHistorySize];
+        recentlyViewed = new Product[maxHistorySize];
     }
 
     public void add(Product product) {
-        if (Arrays.stream(browsingHistory).filter(Objects::nonNull).noneMatch(e -> e.equals(product))) {
+        if (Arrays.stream(recentlyViewed).filter(Objects::nonNull).noneMatch(e -> e.equals(product))) {
             if (currentHistorySize < maxHistorySize) {
-                browsingHistory[currentHistorySize] = product;
+                recentlyViewed[currentHistorySize] = product;
                 ++currentHistorySize;
             } else {
                 for (int i = 0; i < maxHistorySize - 1; i++) {
-                    browsingHistory[i] = browsingHistory[i + 1];
+                    recentlyViewed[i] = recentlyViewed[i + 1];
                 }
-                browsingHistory[currentHistorySize-1] = product;
+                recentlyViewed[currentHistorySize-1] = product;
             }
         }
     }
 
-    public Product[] getBrowsingHistory() {
-        return browsingHistory;
+    public Product[] getRecentlyViewed() {
+        return recentlyViewed;
     }
 
-    public void setBrowsingHistory(Product[] browsingHistory) {
-        this.browsingHistory = browsingHistory;
+    public void setRecentlyViewed(Product[] recentlyViewed) {
+        this.recentlyViewed = recentlyViewed;
     }
 
     public int getMaxHistorySize() {

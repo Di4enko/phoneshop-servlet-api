@@ -1,14 +1,15 @@
-package com.es.phoneshop.model;
+package com.es.phoneshop.DAO;
 
-import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
-import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
+import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -18,7 +19,6 @@ public class ArrayListProductDaoTest
 
     @Before
     public void setup() {
-
         productDao = ArrayListProductDao.getInstance();
         Currency usd = Currency.getInstance("USD");
         productDao.save(new Product("sgs", "Samsung Galaxy S", new BigDecimal(320), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
@@ -112,7 +112,7 @@ public class ArrayListProductDaoTest
         Assertions.assertEquals(testProduct, result);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void getProductNullPointerExceptionTest() {
         productDao.getProduct(null);
     }
@@ -131,7 +131,7 @@ public class ArrayListProductDaoTest
         Assertions.assertEquals(testProduct, result);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void deleteNullPointerExceptionTest() {
         productDao.getProduct(null);
     }
@@ -139,5 +139,13 @@ public class ArrayListProductDaoTest
     @Test(expected = ProductNotFoundException.class)
     public void deleteExceptionTest() throws ProductNotFoundException {
         productDao.delete(-1L);
+    }
+
+    @After
+    public void tearDown() {
+        long size = productDao.findProducts(null, null, null).size();
+        for(int i = 0; i <= size; i++) {
+            productDao.delete(1L);
+        }
     }
 }

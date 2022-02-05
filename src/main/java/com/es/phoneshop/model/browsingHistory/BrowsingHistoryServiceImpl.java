@@ -20,14 +20,14 @@ public class BrowsingHistoryServiceImpl implements BrowsingHistoryService {
         }
         return instance;
     }
-
+    //TODO
     @Override
-    public void addProduct(BrowsingHistory browsingHistory, Product product) {
+    public synchronized void add(BrowsingHistory browsingHistory, Product product) {
         browsingHistory.add(product);
     }
-
+    //TODO
     @Override
-    public BrowsingHistory getBrowsingHistory(HttpServletRequest request) {
+    public synchronized BrowsingHistory getBrowsingHistory(HttpServletRequest request) {
         BrowsingHistory browsingHistory = (BrowsingHistory) request.getSession().getAttribute(BROWSING_HISTORY_SESSION_ATTRIBUTE);
         if(browsingHistory == null) {
             request.getSession().setAttribute(BROWSING_HISTORY_SESSION_ATTRIBUTE, browsingHistory = new BrowsingHistory());

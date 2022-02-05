@@ -27,9 +27,7 @@ public class DemoDataServletContextListener implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
-    }
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {}
 
     private void getSampleProducts() {
         Currency usd = Currency.getInstance("USD");

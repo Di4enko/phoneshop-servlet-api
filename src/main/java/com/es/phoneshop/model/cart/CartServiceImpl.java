@@ -26,18 +26,18 @@ public class CartServiceImpl implements CartService{
         }
         return instance;
     }
-
+    //TODO
     @Override
-    public Cart getCart(HttpServletRequest request) {
+    public synchronized Cart getCart(HttpServletRequest request) {
         Cart cart = (Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
         if(cart == null) {
             request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, cart = new Cart());
         }
         return cart;
     }
-
+    //TODO
     @Override
-    public void add(Cart cart, Long productID, int quantity) throws OutOfStockException {
+    public synchronized void add(Cart cart, Long productID, int quantity) throws OutOfStockException {
         if (quantity > productDao.getProduct(productID).getStock()) {
             throw new OutOfStockException(productDao.getProduct(productID), quantity);
         } else {
