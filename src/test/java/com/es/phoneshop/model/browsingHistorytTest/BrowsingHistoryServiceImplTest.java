@@ -25,7 +25,7 @@ public class BrowsingHistoryServiceImplTest {
     @Mock
     private Product product;
     @Mock
-    HttpSession httpSession;
+    private HttpSession httpSession;
     private BrowsingHistoryService browsingHistoryService = BrowsingHistoryServiceImpl.getInstance();
 
     @Before

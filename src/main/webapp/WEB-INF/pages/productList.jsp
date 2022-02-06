@@ -44,7 +44,7 @@
   </table>
   <p><h3>Recently viewed:</h3></p>
   <p>
-    <c:forEach var="item" items="${recentlyViewed.browsingHistory}">
+    <c:forEach var="item" items="${recentlyViewed.recentlyViewed}">
         <c:if test="${not empty item}">
           <div class="nav">
             <div class="border" align = center>

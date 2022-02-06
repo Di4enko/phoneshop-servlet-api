@@ -45,7 +45,6 @@ public class ProductDetailsPageServletTest {
     private DemoDataServletContextListener listener = new DemoDataServletContextListener();
     private ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
     private ProductDao productDao = ArrayListProductDao.getInstance();
-    private CartService cartService;
 
     @Before
     public void setup() throws ServletException {

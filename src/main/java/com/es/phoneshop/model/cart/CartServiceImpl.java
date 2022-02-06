@@ -17,25 +17,27 @@ public class CartServiceImpl implements CartService{
     }
 
     public static CartService getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             synchronized (CartServiceImpl.class) {
-                if(instance == null) {
+                if (instance == null) {
                     instance = new CartServiceImpl();
                 }
             }
         }
         return instance;
     }
-    //TODO
+
     @Override
-    public synchronized Cart getCart(HttpServletRequest request) {
-        Cart cart = (Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
-        if(cart == null) {
-            request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, cart = new Cart());
+    public  Cart getCart(HttpServletRequest request) {
+        synchronized (request.getSession()) {
+            Cart cart = (Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
+            if (cart == null) {
+                request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, cart = new Cart());
+            }
+            return cart;
         }
-        return cart;
     }
-    //TODO
+
     @Override
     public synchronized void add(Cart cart, Long productID, int quantity) throws OutOfStockException {
         if (quantity > productDao.getProduct(productID).getStock()) {

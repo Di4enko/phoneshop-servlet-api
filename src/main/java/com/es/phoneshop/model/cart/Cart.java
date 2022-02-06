@@ -21,7 +21,7 @@ public class Cart {
 
     public CartItem getByID(long id) {
         final CartItem[] item = {null};
-        items.forEach(e -> {if(e.getProduct().getId() == id){item[0] = e;}});
+        items.forEach(e -> {if (e.getProduct().getId() == id){item[0] = e;}});
         return item[0];
     }
 }
