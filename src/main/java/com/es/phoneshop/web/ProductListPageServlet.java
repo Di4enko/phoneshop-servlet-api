@@ -4,8 +4,8 @@ import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryService;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryServiceImpl;
+import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
+import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

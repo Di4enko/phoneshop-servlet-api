@@ -1,8 +1,8 @@
 package com.es.phoneshop.model.browsingHistorytTest;
 
 import com.es.phoneshop.model.browsingHistory.BrowsingHistory;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryService;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryServiceImpl;
+import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
+import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.model.product.Product;
 import org.junit.Before;
 import org.junit.Test;

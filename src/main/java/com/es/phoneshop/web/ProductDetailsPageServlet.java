@@ -3,11 +3,11 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.OutOfStockException;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryService;
-import com.es.phoneshop.model.browsingHistory.BrowsingHistoryServiceImpl;
+import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
+import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartService;
-import com.es.phoneshop.model.cart.CartServiceImpl;
+import com.es.phoneshop.service.cartService.CartService;
+import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -44,16 +44,14 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
         try {
-            NumberFormat format = NumberFormat.getInstance(request.getLocale());
-            int quantity = format.parse(request.getParameter("quantity")).intValue();
+            int quantity = parseQuantity(request);
             long productID = parseProductID(request);
             cartService.add(cart, productID, quantity);
-            productDao.getProduct(productID).setStock(productDao.getProduct(productID).getStock()-quantity);
             response.sendRedirect(request.getContextPath() + "/products/" + productID + "?success=Added to cart successfully" );
         } catch (OutOfStockException e)  {
             request.setAttribute("error", "Not enough stock");
             doGet(request,response);
-        } catch (ParseException e) {
+        } catch (ParseException | NumberFormatException e) {
             request.setAttribute("error", "Not a number");
             doGet(request,response);
         }
@@ -62,5 +60,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private long parseProductID(HttpServletRequest request) {
         long productID = Long.parseLong(request.getPathInfo().substring(1));
         return productID;
+    }
+
+    private int parseQuantity(HttpServletRequest request) throws ParseException, NumberFormatException {
+        NumberFormat format = NumberFormat.getInstance(request.getLocale());
+        Integer.parseInt(request.getParameter("quantity"));
+        int quantity = format.parse(request.getParameter("quantity")).intValue();
+        return quantity;
     }
 }

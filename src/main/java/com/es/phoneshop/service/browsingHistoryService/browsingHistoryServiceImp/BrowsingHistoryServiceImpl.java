@@ -1,8 +1,12 @@
-package com.es.phoneshop.model.browsingHistory;
+package com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp;
 
+import com.es.phoneshop.model.browsingHistory.BrowsingHistory;
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class BrowsingHistoryServiceImpl implements BrowsingHistoryService {
     private static final String BROWSING_HISTORY_SESSION_ATTRIBUTE = BrowsingHistoryServiceImpl.class + "history";
@@ -23,7 +27,20 @@ public class BrowsingHistoryServiceImpl implements BrowsingHistoryService {
 
     @Override
     public synchronized void add(BrowsingHistory browsingHistory, Product product) {
-        browsingHistory.add(product);
+        if (Arrays.stream(browsingHistory.getRecentlyViewed()).filter(Objects::nonNull).noneMatch(e -> e.equals(product))) {
+            Product[] recentlyViewed = browsingHistory.getRecentlyViewed();
+            int maxHistorySize = browsingHistory.getMaxHistorySize();
+            int currentHistorySize = browsingHistory.getCurrentHistorySize();
+            if (currentHistorySize < maxHistorySize) {
+                recentlyViewed[currentHistorySize] = product;
+                browsingHistory.setCurrentHistorySize(currentHistorySize + 1);
+            } else {
+                for (int i = 0; i < maxHistorySize - 1; i++) {
+                    recentlyViewed[i] = recentlyViewed[i + 1];
+                }
+                recentlyViewed[currentHistorySize-1] = product;
+            }
+        }
     }
 
     @Override
