@@ -27,7 +27,21 @@ td {
 img.product-tile {
   max-width: 64px;
 }
-
+.error {
+ color: red;
+}
+.success {
+ color: green;
+}
+.border {
+ width: 120px;
+ height: 150px;
+ outline: 2px solid #000;
+}
+.nav {
+ vertical-align: top;
+ display: inline-block
+}
 /* Page specific styles */
 body.product-list {
 

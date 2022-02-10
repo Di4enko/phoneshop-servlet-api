@@ -2,7 +2,7 @@ package com.es.phoneshop.DAO.impl;
 
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.exception.ProductNotFoundException;
-import com.es.phoneshop.model.Product;
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
 import java.util.ArrayList;
@@ -41,10 +41,10 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public Product getProduct(Long id) throws ProductNotFoundException {
         lock.readLock().lock();
-        if (id == null) {
-            throw new  IllegalArgumentException("ID not set");
-        }
         try {
+            if (id == null) {
+            throw new  IllegalArgumentException("ID not set");
+            }
             return productList.stream()
                     .filter(product -> id.equals(product.getId()))
                     .findAny()
@@ -113,10 +113,10 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public void delete(Long id) throws ProductNotFoundException {
         lock.writeLock().lock();
-        if (id == null) {
-            throw new IllegalArgumentException("ID not set");
-        }
         try {
+            if (id == null) {
+            throw new IllegalArgumentException("ID not set");
+            }
             if (id > 0 && id <= maxID) {
                 productList.remove(Math.toIntExact(id) - 1);
                 rewriteID(id);

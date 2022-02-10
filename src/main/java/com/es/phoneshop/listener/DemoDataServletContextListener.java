@@ -2,8 +2,8 @@ package com.es.phoneshop.listener;
 
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
-import com.es.phoneshop.model.PriceHistory;
-import com.es.phoneshop.model.Product;
+import com.es.phoneshop.model.product.PriceHistory;
+import com.es.phoneshop.model.product.Product;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.math.BigDecimal;
@@ -27,9 +27,7 @@ public class DemoDataServletContextListener implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
-    }
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {}
 
     private void getSampleProducts() {
         Currency usd = Currency.getInstance("USD");
