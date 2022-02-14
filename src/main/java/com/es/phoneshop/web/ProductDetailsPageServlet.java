@@ -22,10 +22,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
     private CartService cartService;
     private BrowsingHistoryService browsingHistory;
+    private MiniCartServlet miniCartServlet = new MiniCartServlet();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        miniCartServlet.init(config);
         productDao = ArrayListProductDao.getInstance();
         cartService = CartServiceImpl.getInstance();
         browsingHistory = BrowsingHistoryServiceImpl.getInstance();
@@ -50,10 +52,10 @@ public class ProductDetailsPageServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/products/" + productID + "?success=Added to cart successfully" );
         } catch (OutOfStockException e)  {
             request.setAttribute("error", "Not enough stock");
-            doGet(request,response);
+            doGet(request, response);
         } catch (ParseException | NumberFormatException e) {
             request.setAttribute("error", "Not a number");
-            doGet(request,response);
+            doGet(request, response);
         }
     }
 

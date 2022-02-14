@@ -63,24 +63,16 @@ public class CartServiceImpl implements CartService {
     public void update(Cart cart, Long productID, int quantity) throws OutOfStockException {
         CartItem item = getFromCartByID(cart, productID);
         Product product = productDao.getProduct(productID);
-        if (item == null) {
-            if (quantity > productDao.getProduct(productID).getStock()) {
-                throw new OutOfStockException(productDao.getProduct(productID), quantity);
-            } else {
-                product.setStock(product.getStock() - quantity);
-                cart.getItems().add(new CartItem(product, quantity));
-            }
+        int deltaQuantity = quantity - item.getQuantity();
+        if (deltaQuantity > productDao.getProduct(productID).getStock()) {
+            throw new OutOfStockException(productDao.getProduct(productID), quantity);
         } else {
-            int deltaQuantity = quantity - item.getQuantity();
-            if (deltaQuantity > productDao.getProduct(productID).getStock()) {
-                throw new OutOfStockException(productDao.getProduct(productID), quantity);
-            } else {
-                product.setStock(product.getStock() - deltaQuantity);
-                item.setQuantity(quantity);
-            }
+            product.setStock(product.getStock() - deltaQuantity);
+            item.setQuantity(quantity);
         }
         recalculateCart(cart);
     }
+
 
     @Override
     public void delete(Cart cart, Long productID) {

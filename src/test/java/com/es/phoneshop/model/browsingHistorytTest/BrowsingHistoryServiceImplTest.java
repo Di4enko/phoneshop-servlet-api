@@ -6,6 +6,7 @@ import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp
 import com.es.phoneshop.model.product.Product;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -31,17 +32,22 @@ public class BrowsingHistoryServiceImplTest {
     @Before
     public void setup() {
         when(request.getSession()).thenReturn(httpSession);
+        Product[] products = new Product[]{null};
+        when(browsingHistory.getRecentlyViewed()).thenReturn(products);
+        when(browsingHistory.getCurrentHistorySize()).thenReturn(0);
+        when(browsingHistory.getMaxHistorySize()).thenReturn(3);
     }
 
     @Test
     public void addProductTest() {
         browsingHistoryService.add(browsingHistory, product);
-        verify(browsingHistory).add(eq(product));
+        Product resultProduct = browsingHistory.getRecentlyViewed()[0];
+        Assertions.assertEquals(resultProduct, product);
     }
 
     @Test
     public void getBrowsingHistoryTest() {
         browsingHistoryService.getBrowsingHistory(request);
-        verify(request,times(2)).getSession();
+        verify(request,times(3)).getSession();
     }
 }

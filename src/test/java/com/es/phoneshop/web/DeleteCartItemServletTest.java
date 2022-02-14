@@ -1,8 +1,10 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.DAO.ProductDao;
-import com.es.phoneshop.DAO.impl.ArrayListProductDao;
+import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.listener.DemoDataServletContextListener;
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.service.cartService.CartService;
+import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,47 +17,50 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductPriceHistoryServletTest {
+public class DeleteCartItemServletTest {
     @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
     @Mock
+    private ServletConfig config;
+    @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    private ServletContextEvent servletContextEvent;
+    private HttpSession session;
     @Mock
     private ServletContext servletContext;
     @Mock
-    private ServletConfig config;
-    @Mock
-    private HttpSession session;
+    private ServletContextEvent servletContextEvent;
+    private DeleteCartItemServlet servlet = new DeleteCartItemServlet();
     private DemoDataServletContextListener listener = new DemoDataServletContextListener();
-    private ProductPriceHistoryServlet servlet = new ProductPriceHistoryServlet();
-    private ProductDao productDao = ArrayListProductDao.getInstance();
+    private CartService cartService = CartServiceImpl.getInstance();
 
     @Before
     public void setup() throws ServletException {
+        servlet.init(config);
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getSession()).thenReturn(session);
         when(request.getPathInfo()).thenReturn("/1");
+        when(request.getLocale()).thenReturn(Locale.UK);
         when(servletContextEvent.getServletContext()).thenReturn(servletContext);
         when(servletContext.getInitParameter(anyString())).thenReturn("true");
-        when(request.getSession()).thenReturn(session);
-        when(session.getAttribute(anyString())).thenReturn(null);
         listener.contextInitialized(servletContextEvent);
-        servlet.init(config);
     }
 
     @Test
-    public void doGetTest() throws ServletException, IOException {
-        servlet.doGet(request, response);
-        verify(request).setAttribute("product", productDao.getProduct(1L));
-        verify(requestDispatcher).forward(request, response);
+    public void doPostTest() throws IOException, OutOfStockException {
+        Cart cart = cartService.getCart(request);
+        cartService.add(cart, 1L, 1);
+        when(session.getAttribute(anyString())).thenReturn(cart);
+        servlet.doPost(request, response);
+        verify(response).sendRedirect(anyString());
     }
 }
