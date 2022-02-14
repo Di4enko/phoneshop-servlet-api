@@ -42,6 +42,9 @@ img.product-tile {
  vertical-align: top;
  display: inline-block
 }
+.quantity {
+ text-align: right;
+}
 /* Page specific styles */
 body.product-list {
 

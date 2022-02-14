@@ -13,6 +13,19 @@
     <input name = "query", value = "${param.query}">
     <button>Search</button>
   </form>
+  <p>
+  ${cart}
+  </p>
+  <c:if test = "${not empty error}">
+      <p class="error">
+          There were errors adding to cart
+      </p>
+  </c:if>
+  <c:if test = "${empty error}">
+      <p class="success">
+        ${param.success}
+      </p>
+  </c:if>
   <table>
     <thead>
       <tr>
@@ -21,13 +34,15 @@
             Description
             <tags:sortLink sort = "DESCRIPTION"/>
         </td>
+        <td>Quantity</td>
         <td align = center>
             Price
             <tags:sortLink sort = "PRICE"/>
         </td>
+        <td></td>
       </tr>
     </thead>
-    <c:forEach var="product" items="${products}">
+    <c:forEach var="product" items="${products}" varStatus="status">
       <tr>
         <td>
           <img class="product-tile" src="${product.imageUrl}">
@@ -35,10 +50,29 @@
         <td>
             <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/${product.id}">${product.description}</a>
         </td>
+        <td>
+        <a name="addToCart">
+            <form method="post">
+                <input name="quantity" value="${not empty error and errorID == product.id? param.quantity : 1}" class="quantity"/>
+                <c:if test = "${not empty error and errorID == product.id}">
+                <p class="error">
+                    ${error}
+                </p>
+                </c:if>
+                <input type="hidden" name="productID" value="${product.id}"/>
+            <form>
+        </a>
+        </td>
         <td class="price">
           <a style="color:#000000; " href = "${pageContext.servletContext.contextPath}/products/pricehistory/${product.id}">
           <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a>
         </td>
+        <a href="#addToCart">
+        <td>
+          <button>Add to cart</button>
+        </td>
+        </a>
+        </form>
       </tr>
     </c:forEach>
   </table>

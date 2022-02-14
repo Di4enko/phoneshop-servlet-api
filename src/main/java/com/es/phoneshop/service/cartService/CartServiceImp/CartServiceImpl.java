@@ -9,11 +9,12 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.cartService.CartService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 public class CartServiceImpl implements CartService {
     private static final String CART_SESSION_ATTRIBUTE = CartServiceImpl.class + "cart";
     private ProductDao productDao;
-    private static  CartService instance;
+    private static CartService instance;
 
     private CartServiceImpl() {
         productDao = ArrayListProductDao.getInstance();
@@ -55,11 +56,60 @@ public class CartServiceImpl implements CartService {
                 item.setQuantity(item.getQuantity() + quantity);
             }
         }
+        recalculateCart(cart);
     }
 
-    private CartItem getFromCartByID(Cart cart, long ID) {
+    @Override
+    public void update(Cart cart, Long productID, int quantity) throws OutOfStockException {
+        CartItem item = getFromCartByID(cart, productID);
+        Product product = productDao.getProduct(productID);
+        if (item == null) {
+            if (quantity > productDao.getProduct(productID).getStock()) {
+                throw new OutOfStockException(productDao.getProduct(productID), quantity);
+            } else {
+                product.setStock(product.getStock() - quantity);
+                cart.getItems().add(new CartItem(product, quantity));
+            }
+        } else {
+            int deltaQuantity = quantity - item.getQuantity();
+            if (deltaQuantity > productDao.getProduct(productID).getStock()) {
+                throw new OutOfStockException(productDao.getProduct(productID), quantity);
+            } else {
+                product.setStock(product.getStock() - deltaQuantity);
+                item.setQuantity(quantity);
+            }
+        }
+        recalculateCart(cart);
+    }
+
+    @Override
+    public void delete(Cart cart, Long productID) {
+        CartItem item = getFromCartByID(cart, productID);
+        Product product = productDao.getProduct(productID);
+        product.setStock(product.getStock() + item.getQuantity());
+        cart.getItems().removeIf(cartItem -> cartItem.getProduct().getId().equals(productID));
+        recalculateCart(cart);
+    }
+
+    private void recalculateCart(Cart cart) {
+        cart.setTotalQuantity(cart.getItems().stream().map(CartItem::getQuantity).mapToInt(Integer::intValue).sum());
+        final BigDecimal[] totalCost = {new BigDecimal(0)};
+        cart.getItems().forEach(e -> {
+            BigDecimal price = e.getProduct().getPrice();
+            for(int i=0; i < e.getQuantity(); i++) {
+                totalCost[0] = totalCost[0].add(price);
+            }
+        });
+        cart.setTotalCost(totalCost[0]);
+    }
+
+    private CartItem getFromCartByID (Cart cart,long ID){
         final CartItem[] item = {null};
-        cart.getItems().forEach(e -> {if (e.getProduct().getId() == ID){item[0] = e;}});
+        cart.getItems().forEach(e -> {
+            if (e.getProduct().getId() == ID) {
+                item[0] = e;
+            }
+        });
         return item[0];
     }
 }
