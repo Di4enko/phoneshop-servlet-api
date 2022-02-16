@@ -58,9 +58,11 @@
       </tr>
     </c:forEach>
   </table>
+  <c:if test="${not empty cart.items}">
   <p>
     <button>Update</button>
   </p>
+  </c:if>
 </form>
 <form id="deleteCartItem" method="post"/>
 </tags:master>

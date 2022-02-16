@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class CartItem implements Serializable {
     private Product product;
     private int quantity;
+    private static  final long serialVersionUID = 1;
 
     public CartItem(Product product, int quantity) {
         this.product = product;

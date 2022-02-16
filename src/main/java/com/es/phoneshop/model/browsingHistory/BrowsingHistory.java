@@ -8,6 +8,7 @@ public class BrowsingHistory implements Serializable {
     private Product[] recentlyViewed;
     private int maxHistorySize = 3;
     private int currentHistorySize;
+    private static  final long serialVersionUID = 1;
 
     public BrowsingHistory() {
         currentHistorySize = 0;

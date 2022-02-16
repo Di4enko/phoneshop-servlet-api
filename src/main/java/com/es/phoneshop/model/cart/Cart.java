@@ -9,6 +9,7 @@ public class Cart implements Serializable {
     private List<CartItem> items;
     private BigDecimal totalCost;
     private int totalQuantity;
+    private static  final long serialVersionUID = 1;
 
     public BigDecimal getTotalCost() {
         return totalCost;

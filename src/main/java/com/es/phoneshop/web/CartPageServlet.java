@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.web.helper.Helper;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,18 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CartPageServlet extends HttpServlet {
     private CartService cartService;
+    private Helper helper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         cartService = CartServiceImpl.getInstance();
+        helper = Helper.getInstance();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class CartPageServlet extends HttpServlet {
         Map<Long, String> errors = new HashMap<>();
         for (int i = 0; i < quantities.length; i++) {
             try {
-                int quantity = parseQuantity(quantities[i], request);
+                int quantity = helper.parseQuantity(quantities[i], request);
                 long productID = Long.parseLong(productIDs[i]);
                 cartService.update(cartService.getCart(request), productID, quantity);
             } catch (ParseException | NumberFormatException e) {
@@ -52,11 +54,5 @@ public class CartPageServlet extends HttpServlet {
             request.setAttribute("errors", errors);
             doGet(request, response);
         }
-    }
-
-    private int parseQuantity(String quantityString, HttpServletRequest request) throws ParseException, NumberFormatException {
-        NumberFormat format = NumberFormat.getInstance(request.getLocale());
-        Integer.parseInt(quantityString);
-        return format.parse(quantityString).intValue();
     }
 }

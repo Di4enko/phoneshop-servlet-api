@@ -10,6 +10,7 @@ import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
 import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.web.helper.Helper;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,13 +18,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 public class ProductListPageServlet extends HttpServlet {
     private ProductDao products;
     private BrowsingHistoryService browsingHistoryService;
     private CartService cartService;
+    private Helper helper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -31,6 +32,7 @@ public class ProductListPageServlet extends HttpServlet {
         products = ArrayListProductDao.getInstance();
         browsingHistoryService = BrowsingHistoryServiceImpl.getInstance();
         cartService = CartServiceImpl.getInstance();
+        helper = Helper.getInstance();
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ProductListPageServlet extends HttpServlet {
         Cart cart = cartService.getCart(request);
         long productID = Long.parseLong(request.getParameter("productID"));
         try {
-            int quantity = parseQuantity(request);
+            int quantity = helper.parseQuantity(request.getParameter("quantity"), request);
             cartService.add(cart, productID, quantity);
             response.sendRedirect(request.getRequestURL() + "?success=Product added to cart successfully");
         } catch (ParseException | NumberFormatException e) {
@@ -60,12 +62,5 @@ public class ProductListPageServlet extends HttpServlet {
             request.setAttribute("errorID", productID);
             doGet(request, response);
         }
-    }
-
-    private int parseQuantity(HttpServletRequest request) throws ParseException, NumberFormatException {
-        NumberFormat format = NumberFormat.getInstance(request.getLocale());
-        Integer.parseInt(request.getParameter("quantity"));
-        int quantity = format.parse(request.getParameter("quantity")).intValue();
-        return quantity;
     }
 }
