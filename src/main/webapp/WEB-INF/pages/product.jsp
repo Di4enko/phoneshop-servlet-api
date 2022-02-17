@@ -51,7 +51,7 @@
   </table>
   <p>
     <form method = "post">
-        <input name = "quantity" value = "${not empty error ? param.quantity : 1}">
+        <input name = "quantity" value = "${not empty error ? param.quantity : 1}" class="quantity">
         <button>Add to cart</button>
     </form>
     <c:if test = "${not empty error}">

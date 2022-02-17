@@ -2,10 +2,13 @@ package com.es.phoneshop.model.browsingHistory;
 
 import com.es.phoneshop.model.product.Product;
 
-public class BrowsingHistory {
+import java.io.Serializable;
+
+public class BrowsingHistory implements Serializable {
     private Product[] recentlyViewed;
     private int maxHistorySize = 3;
     private int currentHistorySize;
+    private static  final long serialVersionUID = 1;
 
     public BrowsingHistory() {
         currentHistorySize = 0;

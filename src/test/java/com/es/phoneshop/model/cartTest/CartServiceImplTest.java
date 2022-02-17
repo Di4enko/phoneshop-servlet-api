@@ -44,7 +44,7 @@ public class CartServiceImplTest {
     @Test
     public void getCartTest() {
         cartService.getCart(request);
-        verify(request,times(2)).getSession();
+        verify(request,times(3)).getSession();
     }
 
     @Test
@@ -54,7 +54,7 @@ public class CartServiceImplTest {
         cart = cartService.getCart(request);
         cartService.add(cart, productID, 1);
         cartService.add(cart, productID, 2);
-        int resultQuantity = cart.getByID(productID).getQuantity();
+        int resultQuantity = cart.getTotalQuantity();
         Assertions.assertEquals(3, resultQuantity);
     }
 
@@ -64,5 +64,40 @@ public class CartServiceImplTest {
         long productID = 3L;
         cart = cartService.getCart(request);
         cartService.add(cart, productID, Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void updateTest() throws OutOfStockException {
+        listener.contextInitialized(servletContextEvent);
+        long productID = 1L;
+        cart = cartService.getCart(request);
+        cartService.add(cart, productID, 2);
+        int testQuantity = 5;
+        cartService.update(cart, productID, testQuantity);
+        int resultQuantity = cart.getTotalQuantity();
+        Assertions.assertEquals(testQuantity, resultQuantity);
+    }
+
+    @Test(expected = OutOfStockException.class)
+    public void updateExceptionTest() throws OutOfStockException {
+        listener.contextInitialized(servletContextEvent);
+        long productID = 1L;
+        cart = cartService.getCart(request);
+        int quantity = 2;
+        cartService.add(cart, productID, quantity);
+        int testQuantity = (cart.getItems().get(0).getProduct().getStock() + quantity) + 1;
+        cartService.update(cart, productID, testQuantity);
+
+    }
+
+    @Test
+    public void deleteTest() throws OutOfStockException {
+        listener.contextInitialized(servletContextEvent);
+        long productID = 1L;
+        cart = cartService.getCart(request);
+        cartService.add(cart, productID, 2);
+        cartService.delete(cart, productID);
+        int resultQuantity = cart.getTotalQuantity();
+        Assertions.assertEquals(0, resultQuantity);
     }
 }
