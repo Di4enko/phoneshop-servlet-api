@@ -11,6 +11,11 @@ public class Cart implements Serializable {
     private int totalQuantity;
     private static  final long serialVersionUID = 1;
 
+    public Cart() {
+        items = new ArrayList<>();
+    }
+
+
     public BigDecimal getTotalCost() {
         return totalCost;
     }
@@ -27,12 +32,12 @@ public class Cart implements Serializable {
         this.totalQuantity = totalQuantity;
     }
 
-    public Cart() {
-        items = new ArrayList<>();
-    }
-
     public List<CartItem> getItems() {
         return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
     }
 
     @Override

@@ -1,9 +1,9 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.web.servlets;
 
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
-import com.es.phoneshop.web.helper.Helper;
+import com.es.phoneshop.helpers.ServletHelper;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,13 +17,13 @@ import java.util.Map;
 
 public class CartPageServlet extends HttpServlet {
     private CartService cartService;
-    private Helper helper;
+    private ServletHelper servletHelper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         cartService = CartServiceImpl.getInstance();
-        helper = Helper.getInstance();
+        servletHelper = ServletHelper.getInstance();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CartPageServlet extends HttpServlet {
         Map<Long, String> errors = new HashMap<>();
         for (int i = 0; i < quantities.length; i++) {
             try {
-                int quantity = helper.parseQuantity(quantities[i], request);
+                int quantity = servletHelper.parseQuantity(quantities[i], request);
                 long productID = Long.parseLong(productIDs[i]);
                 cartService.update(cartService.getCart(request), productID, quantity);
             } catch (ParseException | NumberFormatException e) {

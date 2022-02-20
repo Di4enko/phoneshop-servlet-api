@@ -89,6 +89,13 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Override
+    public void clear(Cart cart) {
+        cart.getItems().clear();
+        cart.setTotalCost(BigDecimal.valueOf(0));
+        cart.setTotalQuantity(0);
+    }
+
     private void recalculateCart(Cart cart) {
         cart.setTotalQuantity(cart.getItems().stream().map(CartItem::getQuantity).mapToInt(Integer::intValue).sum());
         final BigDecimal[] totalCost = {new BigDecimal(0)};

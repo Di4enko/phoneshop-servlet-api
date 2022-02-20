@@ -64,5 +64,10 @@
   </p>
   </c:if>
 </form>
-<form id="deleteCartItem" method="post"/>
+<form id="deleteCartItem" method="post"></form>
+<c:if test="${not empty cart.items}">
+<form action="${pageContext.servletContext.contextPath}/checkout">
+    <button>checkout</button>
+</form>
+</c:if>
 </tags:master>

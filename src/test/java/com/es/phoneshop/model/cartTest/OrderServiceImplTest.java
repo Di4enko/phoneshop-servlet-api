@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CartServiceImplTest {
+public class OrderServiceImplTest {
     @Mock
     private HttpServletRequest request;
     @Mock

@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.listener.DemoDataServletContextListener;
+import com.es.phoneshop.web.servlets.ProductPriceHistoryServlet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

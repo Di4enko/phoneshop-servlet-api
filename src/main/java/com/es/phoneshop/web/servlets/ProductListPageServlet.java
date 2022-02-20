@@ -1,4 +1,4 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.web.servlets;
 
 import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
@@ -10,7 +10,7 @@ import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
 import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
-import com.es.phoneshop.web.helper.Helper;
+import com.es.phoneshop.helpers.ServletHelper;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class ProductListPageServlet extends HttpServlet {
     private ProductDao products;
     private BrowsingHistoryService browsingHistoryService;
     private CartService cartService;
-    private Helper helper;
+    private ServletHelper servletHelper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -32,7 +32,7 @@ public class ProductListPageServlet extends HttpServlet {
         products = ArrayListProductDao.getInstance();
         browsingHistoryService = BrowsingHistoryServiceImpl.getInstance();
         cartService = CartServiceImpl.getInstance();
-        helper = Helper.getInstance();
+        servletHelper = ServletHelper.getInstance();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ProductListPageServlet extends HttpServlet {
         Cart cart = cartService.getCart(request);
         long productID = Long.parseLong(request.getParameter("productID"));
         try {
-            int quantity = helper.parseQuantity(request.getParameter("quantity"), request);
+            int quantity = servletHelper.parseQuantity(request.getParameter("quantity"), request);
             cartService.add(cart, productID, quantity);
             response.sendRedirect(request.getRequestURL() + "?success=Product added to cart successfully");
         } catch (ParseException | NumberFormatException e) {

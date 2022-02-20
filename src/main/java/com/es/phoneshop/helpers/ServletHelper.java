@@ -1,22 +1,21 @@
-package com.es.phoneshop.web.helper;
+package com.es.phoneshop.helpers;
 
 import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
-import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-public class Helper {
-    private static Helper instance;
+public class ServletHelper {
+    private static ServletHelper instance;
 
-    private Helper() {}
+    private ServletHelper() {}
 
-    public static Helper getInstance() {
+    public static ServletHelper getInstance() {
         if (instance == null) {
             synchronized (BrowsingHistoryService.class) {
                 if (instance == null) {
-                    instance = new Helper();
+                    instance = new ServletHelper();
                 }
             }
         }
