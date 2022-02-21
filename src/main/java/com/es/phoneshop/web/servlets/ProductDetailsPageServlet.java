@@ -34,7 +34,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productID = parseProductID(request);
         browsingHistory.add(browsingHistory.getBrowsingHistory(request),productDao.getProduct(productID));
         request.setAttribute("product", productDao.getProduct(productID));
@@ -43,7 +43,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
         try {
             int quantity = parseQuantity(request);

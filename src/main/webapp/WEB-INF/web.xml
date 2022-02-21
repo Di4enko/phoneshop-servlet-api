@@ -110,6 +110,11 @@
   </error-page>
 
   <error-page>
+    <location>/WEB-INF/pages/orderNotFoundError.jsp</location>
+    <exception-type>com.es.phoneshop.exception.OrderNotFoundException</exception-type>
+  </error-page>
+
+  <error-page>
     <location>/WEB-INF/pages/error.jsp</location>
     <error-code>500</error-code>
   </error-page>

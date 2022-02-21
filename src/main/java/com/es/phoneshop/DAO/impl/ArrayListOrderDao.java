@@ -2,22 +2,22 @@ package com.es.phoneshop.DAO.impl;
 
 import com.es.phoneshop.DAO.OrderDao;
 import com.es.phoneshop.exception.OrderNotFoundException;
-import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.model.order.Order;
-import com.es.phoneshop.model.product.Product;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ArrayListOrderDao implements OrderDao {
-    private static  OrderDao instance;
+    private static OrderDao instance;
     private List<Order> orderList;
     private ReadWriteLock lock;
     private long maxID;
 
+
     private ArrayListOrderDao() {
-        orderList = new LinkedList<>();
+        orderList = new ArrayList<>();
         lock = new ReentrantReadWriteLock();
         maxID = 1;
     }
@@ -33,7 +33,6 @@ public class ArrayListOrderDao implements OrderDao {
         return instance;
     }
 
-
     @Override
     public Order getOrder(Long id) throws OrderNotFoundException {
         lock.readLock().lock();
@@ -44,7 +43,7 @@ public class ArrayListOrderDao implements OrderDao {
             return orderList.stream()
                     .filter(order -> id.equals(order.getId()))
                     .findAny()
-                    .orElseThrow(() -> new ProductNotFoundException("Order with this ID does not exist"));
+                    .orElseThrow(() -> new OrderNotFoundException("Order with this ID does not exist"));
         } finally {
             lock.readLock().unlock();
         }
@@ -60,7 +59,7 @@ public class ArrayListOrderDao implements OrderDao {
             return orderList.stream()
                     .filter(order -> id.equals(order.getSecureID()))
                     .findAny()
-                    .orElseThrow(() -> new ProductNotFoundException("Order with this ID does not exist"));
+                    .orElseThrow(() -> new OrderNotFoundException("Order with this ID does not exist"));
         } finally {
             lock.readLock().unlock();
         }
@@ -73,8 +72,13 @@ public class ArrayListOrderDao implements OrderDao {
             if (order.getId() == null) {
                 order.setId(maxID++);
                 orderList.add(order);
-            } else if (!order.equals(getOrder(order.getId()))) {
-                orderList.set(Math.toIntExact(order.getId()-1), order);
+            } else if (order.getId() <= maxID) {
+                if (!order.equals(getOrder(order.getId()))) {
+                    orderList.set(Math.toIntExact(order.getId() - 1), order);
+                } else {
+                    order.setId(maxID++);
+                    orderList.add(order);
+                }
             }
         } finally {
             lock.writeLock().unlock();

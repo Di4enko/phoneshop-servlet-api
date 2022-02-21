@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class ArrayListProductDaoTest
-{
+public class ArrayListProductDaoTest {
     private ProductDao productDao;
 
     @Before

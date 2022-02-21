@@ -36,7 +36,7 @@ public class ProductListPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("query");
         SortField sortField = request.getParameter("sort") != null ? SortField.valueOf(request.getParameter("sort")) : SortField.DEFAULT;
         SortOrder sortOrder = request.getParameter("order") != null ? SortOrder.valueOf(request.getParameter("order")) : SortOrder.DEFAULT;
@@ -46,7 +46,7 @@ public class ProductListPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Cart cart = cartService.getCart(request);
         long productID = Long.parseLong(request.getParameter("productID"));
         try {

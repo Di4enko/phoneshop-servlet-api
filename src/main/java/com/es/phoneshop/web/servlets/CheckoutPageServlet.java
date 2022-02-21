@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.regex.PatternSyntaxException;
 
 public class CheckoutPageServlet extends HttpServlet {
     private CartService cartService;
@@ -34,7 +33,7 @@ public class CheckoutPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
         request.setAttribute("order", orderService.getOrder(cart));
         request.setAttribute("paymentMethod", orderService.getPaymentMethod());
@@ -42,7 +41,7 @@ public class CheckoutPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
         Order order = orderService.getOrder(cart);
         Map<String, String> errors = new HashMap<>();

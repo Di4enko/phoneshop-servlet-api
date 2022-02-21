@@ -27,13 +27,13 @@ public class CartPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("cart", cartService.getCart(request));
         request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String[] quantities = request.getParameterValues("quantity");
         String[] productIDs = request.getParameterValues("productID");
         Map<Long, String> errors = new HashMap<>();
