@@ -35,19 +35,21 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order getOrder(Cart cart) {
-        Order order = new Order();
-        order.setItems(cart.getItems().stream().map(item -> {
+        synchronized (cart) {
+            Order order = new Order();
+            order.setItems(cart.getItems().stream().map(item -> {
                 try {
-                    return  (CartItem) item.clone();
-                }catch (CloneNotSupportedException e) {
+                    return (CartItem) item.clone();
+                } catch (CloneNotSupportedException e) {
                     throw new RuntimeException(e);
                 }
-        }).collect(Collectors.toList()));
-        order.setTotalQuantity(cart.getTotalQuantity());
-        order.setDeliveryCost(calculateDeliveryCost());
-        order.setSubtotal(cart.getTotalCost());
-        order.setTotalCost(order.getSubtotal().add(order.getDeliveryCost()));
-        return order;
+            }).collect(Collectors.toList()));
+            order.setTotalQuantity(cart.getTotalQuantity());
+            order.setDeliveryCost(calculateDeliveryCost());
+            order.setSubtotal(cart.getTotalCost());
+            order.setTotalCost(order.getSubtotal().add(order.getDeliveryCost()));
+            return order;
+        }
     }
 
     @Override
@@ -56,11 +58,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public void setOrder(Order order) {
-        order.setSecureID(UUID.randomUUID().toString());
-        orderDao.save(order);
+        synchronized (order) {
+            order.setSecureID(UUID.randomUUID().toString());
+            orderDao.save(order);
+        }
     }
 
-    private BigDecimal calculateDeliveryCost() {
+    private synchronized BigDecimal calculateDeliveryCost() {
         return new BigDecimal(5);
     }
 }
