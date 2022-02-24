@@ -1,14 +1,12 @@
 package com.es.phoneshop.web.servlets;
 
-import com.es.phoneshop.enums.PaymentMethod;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.service.cartService.CartService;
-import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.service.cartService.impl.CartServiceImpl;
 import com.es.phoneshop.service.orderService.OrderService;
-import com.es.phoneshop.service.orderService.OrderServiceImpl;
-import com.es.phoneshop.web.servlets.CheckoutPageServlet;
+import com.es.phoneshop.service.orderService.impl.OrderServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

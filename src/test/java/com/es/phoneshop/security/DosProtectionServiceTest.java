@@ -1,5 +1,6 @@
 package com.es.phoneshop.security;
 
+import com.es.phoneshop.security.impl.DosProtectionServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

@@ -1,13 +1,12 @@
 package com.es.phoneshop.web.servlets;
 
 import com.es.phoneshop.enums.PaymentMethod;
-import com.es.phoneshop.exception.NotDateException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.service.cartService.CartService;
-import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.service.cartService.impl.CartServiceImpl;
 import com.es.phoneshop.service.orderService.OrderService;
-import com.es.phoneshop.service.orderService.OrderServiceImpl;
+import com.es.phoneshop.service.orderService.impl.OrderServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -99,28 +98,18 @@ public class CheckoutPageServlet extends HttpServlet {
     }
 
     private void setDeliveryDate(HttpServletRequest request, Map<String, String> errors, Order order) {
-        String parameter = request.getParameter("deliveryDate");
-        if (parameter == null || parameter.isEmpty()) {
+        try {
+            LocalDate date = parseDate(request);
+            order.setDeliveryDate(date);
+        } catch (NumberFormatException | DateTimeException e) {
             errors.put("deliveryDate", "Incorrect input");
-        } else {
-            try {
-                LocalDate date = parseDate(parameter);
-                order.setDeliveryDate(date);
-            } catch (NumberFormatException | DateTimeException | NotDateException e) {
-                errors.put("paymentMethode", "Incorrect input");
-            }
         }
     }
 
-    private LocalDate parseDate(String date) throws NumberFormatException, DateTimeException, NotDateException {
-        String[] dateParameters = date.split("\\.");
-        if (dateParameters.length == 3) {
-            int year = Integer.parseInt(dateParameters[2]);
-            int month = Integer.parseInt(dateParameters[1]);
-            int day = Integer.parseInt(dateParameters[0]);
+    private LocalDate parseDate(HttpServletRequest request) throws NumberFormatException, DateTimeException{
+            int year = Integer.parseInt(request.getParameter("year"));
+            int month = Integer.parseInt(request.getParameter("month"));
+            int day = Integer.parseInt(request.getParameter("day"));
             return LocalDate.of(year, month, day);
-        } else {
-            throw new NotDateException("Incorrect delivery date input");
-        }
     }
 }

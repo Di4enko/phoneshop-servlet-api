@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -44,13 +43,29 @@
         <tags:item label="First name" name="firstName" order="${order}" error="${errors}"></tags:item>
         <tags:item label="Last name" name="lastName" order="${order}" error="${errors}"></tags:item>
         <tags:item label="Phone" name="phone" order="${order}" error="${errors}"></tags:item>
-        <tags:item label="Delivery date" name="deliveryDate" order="${order}" error="${errors}"></tags:item>
+        <tr>
+            <td>
+            Delivery date
+            </td>
+            <td>
+            <div class="nav">
+               <tags:date name="day" order="${order}" error="${errors}"></tags:date>
+               <tags:date name="month" order="${order}" error="${errors}"></tags:date>
+               <tags:date name="year" order="${order}" error="${errors}"></tags:date>
+            </div>
+                <c:set var="error" value="${errors['deliveryDate']}"/>
+                <c:if test = "${not empty error}">
+                    <div class="error">
+                        ${error}
+                    </div>
+                </c:if>
+            </td>
+        </tr>
         <tags:item label="Delivery address" name="deliveryAddress" order="${order}" error="${errors}"></tags:item>
         <tr>
             <td>Payment method<span style="color:red">*</span></td>
             <td>
                 <select name="paymentMethod">
-                <option></option>
                     <c:forEach var="paymentMethod" items="${paymentMethod}">
                         <c:if test="${param.paymentMethod != paymentMethod}">
                             <option>${paymentMethod}</option>

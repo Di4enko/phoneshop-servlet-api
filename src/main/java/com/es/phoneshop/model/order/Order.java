@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Order extends Cart implements Serializable {
-    private Long id;
     private String secureID;
     private BigDecimal subtotal;
     private BigDecimal deliveryCost;
@@ -56,10 +55,6 @@ public class Order extends Cart implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setSecureID(String secureID) {
         this.secureID = secureID;
     }
@@ -92,10 +87,6 @@ public class Order extends Cart implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getSecureID() {
         return secureID;
     }
@@ -111,7 +102,6 @@ public class Order extends Cart implements Serializable {
         if (obj == null || getClass() != obj.getClass()) return false;
         Order order = (Order) obj;
         return subtotal.equals(order.subtotal)
-                && id.equals(order.id)
                 && deliveryCost.equals(deliveryCost)
                 && firstName.equals(order.firstName)
                 && lastName.equals(order.lastName)

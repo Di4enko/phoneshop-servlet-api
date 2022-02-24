@@ -1,6 +1,7 @@
-package com.es.phoneshop.security;
+package com.es.phoneshop.security.impl;
 
-import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.security.DosProtectionService;
+import com.es.phoneshop.service.cartService.impl.CartServiceImpl;
 
 import java.util.Date;
 import java.util.Map;

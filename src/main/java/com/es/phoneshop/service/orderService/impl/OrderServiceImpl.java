@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.orderService;
+package com.es.phoneshop.service.orderService.impl;
 
 import com.es.phoneshop.DAO.OrderDao;
 import com.es.phoneshop.DAO.impl.ArrayListOrderDao;
@@ -6,7 +6,8 @@ import com.es.phoneshop.enums.PaymentMethod;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.order.Order;
-import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.service.cartService.impl.CartServiceImpl;
+import com.es.phoneshop.service.orderService.OrderService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     private static OrderService instance;
 
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService{
                 try {
                     return (CartItem) item.clone();
                 } catch (CloneNotSupportedException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Order receipt error");
                 }
             }).collect(Collectors.toList()));
             order.setTotalQuantity(cart.getTotalQuantity());

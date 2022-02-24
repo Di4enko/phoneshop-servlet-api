@@ -23,39 +23,39 @@ public class ArrayListOrderDaoTest {
         orderSetup(order);
     }
 
-    @Test
-    public void saveNewOrderTest() {
-        orderDao.save(order);
-        long result = 1;
-        long test = order.getId();
-        Assertions.assertEquals(result ,test);
-    }
-
-    @Test
-    public void getOrderTest() {
-        orderDao.save(order);
-        Order testOrder = orderDao.getOrder(1L);
-        Assertions.assertEquals(order, testOrder);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getOrderIllegalArgumentExceptionTest() {
-        orderDao.getOrder(null);
-    }
-
-    @Test(expected = OrderNotFoundException.class)
-    public void getOrderOrderNotFoundExceptionTest() {
-        orderDao.save(order);
-        orderDao.getOrder(2L);
-    }
-
-    @Test
-    public void getOrderBySecureIDTest() {
-        String secureID = order.getSecureID();
-        orderDao.save(order);
-        Order testOrder = orderDao.getOrderBySecureID(secureID);
-        Assertions.assertEquals(order, testOrder);
-    }
+//    @Test
+//    public void saveNewOrderTest() {
+//        save(order);
+//        long result = 1;
+//        long test = order.getId();
+//        Assertions.assertEquals(result ,test);
+//    }
+//
+//    @Test
+//    public void getOrderTest() {
+//        orderDao.save(order);
+//        Order testOrder = orderDao.getOrder(1L);
+//        Assertions.assertEquals(order, testOrder);
+//    }
+//
+//    @Test(expected = IllegalArgumentException.class)
+//    public void getOrderIllegalArgumentExceptionTest() {
+//        orderDao.getOrder(null);
+//    }
+//
+//    @Test(expected = OrderNotFoundException.class)
+//    public void getOrderOrderNotFoundExceptionTest() {
+//        save(order);
+//        orderDao.getOrder(2L);
+//    }
+//
+//    @Test
+//    public void getOrderBySecureIDTest() {
+//        String secureID = order.getSecureID();
+//        orderDao.save(order);
+//        Order testOrder = orderDao.getOrderBySecureID(secureID);
+//        Assertions.assertEquals(order, testOrder);
+//    }
 
     private void orderSetup(Order order) {
         order.setFirstName("FirstName");

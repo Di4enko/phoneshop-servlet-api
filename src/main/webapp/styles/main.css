@@ -41,9 +41,13 @@ img.product-tile {
 .nav {
  vertical-align: top;
  display: inline-block
+ width: 20px;
 }
 .quantity {
  text-align: right;
+}
+.date {
+ width: 20px;
 }
 /* Page specific styles */
 body.product-list {

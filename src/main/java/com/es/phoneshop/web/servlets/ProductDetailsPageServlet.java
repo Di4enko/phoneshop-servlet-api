@@ -4,10 +4,10 @@ import com.es.phoneshop.DAO.ProductDao;
 import com.es.phoneshop.DAO.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.service.browsingHistoryService.BrowsingHistoryService;
-import com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp.BrowsingHistoryServiceImpl;
+import com.es.phoneshop.service.browsingHistoryService.impl.BrowsingHistoryServiceImpl;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.service.cartService.CartService;
-import com.es.phoneshop.service.cartService.CartServiceImp.CartServiceImpl;
+import com.es.phoneshop.service.cartService.impl.CartServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

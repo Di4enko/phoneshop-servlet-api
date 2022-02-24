@@ -1,25 +1,16 @@
 package com.es.phoneshop.DAO.impl;
 
+import com.es.phoneshop.DAO.GenericArrayListDao;
 import com.es.phoneshop.DAO.OrderDao;
+import com.es.phoneshop.exception.ItemNotFoundException;
 import com.es.phoneshop.exception.OrderNotFoundException;
 import com.es.phoneshop.model.order.Order;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-public class ArrayListOrderDao implements OrderDao {
+public class ArrayListOrderDao extends GenericArrayListDao<Order> implements OrderDao {
     private static OrderDao instance;
-    private List<Order> orderList;
-    private ReadWriteLock lock;
-    private long maxID;
-
 
     private ArrayListOrderDao() {
-        orderList = new ArrayList<>();
-        lock = new ReentrantReadWriteLock();
-        maxID = 1;
+        super();
     }
 
     public static OrderDao getInstance() {
@@ -34,54 +25,32 @@ public class ArrayListOrderDao implements OrderDao {
     }
 
     @Override
-    public Order getOrder(Long id) throws OrderNotFoundException {
-        lock.readLock().lock();
+    public Order getOrder(Long id) {
         try {
-            if (id == null) {
-                throw new  IllegalArgumentException("ID not set");
-            }
-            return orderList.stream()
-                    .filter(order -> id.equals(order.getId()))
-                    .findAny()
-                    .orElseThrow(() -> new OrderNotFoundException("Order with this ID does not exist"));
-        } finally {
-            lock.readLock().unlock();
+            return getItem(id);
+        } catch (ItemNotFoundException ex) {
+            throw new OrderNotFoundException("Order with" + ex.getLocalizedMessage() + "id not found");
         }
     }
 
     @Override
-    public Order getOrderBySecureID(String id) throws OrderNotFoundException {
-        lock.readLock().lock();
+    public Order getOrderBySecureID(String id) {
+        getLock().readLock().lock();
         try {
             if (id == null) {
                 throw new  IllegalArgumentException("ID not set");
             }
-            return orderList.stream()
+            return getItems().stream()
                     .filter(order -> id.equals(order.getSecureID()))
                     .findAny()
-                    .orElseThrow(() -> new OrderNotFoundException("Order with this ID does not exist"));
+                    .orElseThrow(() -> new OrderNotFoundException("Order with " + id + " ID does not exist"));
         } finally {
-            lock.readLock().unlock();
+            getLock().readLock().unlock();
         }
     }
 
     @Override
     public void save(Order order) {
-        lock.writeLock().lock();
-        try {
-            if (order.getId() == null) {
-                order.setId(maxID++);
-                orderList.add(order);
-            } else if (order.getId() <= maxID) {
-                if (!order.equals(getOrder(order.getId()))) {
-                    orderList.set(Math.toIntExact(order.getId() - 1), order);
-                } else {
-                    order.setId(maxID++);
-                    orderList.add(order);
-                }
-            }
-        } finally {
-            lock.writeLock().unlock();
-        }
+        saveItem(order);
     }
 }

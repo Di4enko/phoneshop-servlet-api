@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.browsingHistoryService.browsingHistoryServiceImp;
+package com.es.phoneshop.service.browsingHistoryService.impl;
 
 import com.es.phoneshop.model.browsingHistory.BrowsingHistory;
 import com.es.phoneshop.model.product.Product;
