@@ -3,5 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<jsp:useBean id="cart" type="com.es.phoneshop.model.cart.Cart" scope="request"/>
-        <a href="${pageContext.servletContext.contextPath}/cart">Cart:</a> ${cart.totalQuantity} items, total cost: ${cart.totalCost} USD;
+
+<tags:master pageTitle="Product not found">
+    <h1>Sorry, your order is not find</h1>
+    <p>
+        <a href = "${pageContext.servletContext.contextPath}/products">Click to return to the home page</a>
+    </p>
+</tags:master>
