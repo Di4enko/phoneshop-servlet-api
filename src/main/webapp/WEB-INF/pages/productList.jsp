@@ -13,6 +13,9 @@
     <input name = "query", value = "${param.query}">
     <button>Search</button>
   </form>
+   <a href="${pageContext.servletContext.contextPath}/products/parametersearch">
+          <button>Search with parameters</button>
+      </a>
   <p>
   ${cart}
   </p>

@@ -7,6 +7,8 @@ import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -53,6 +55,30 @@ public class ArrayListProductDao extends GenericArrayListDao<Product> implements
                         .sorted(comparator(sortField, sortOrder))
                         .collect(Collectors.toList());
             }
+        } finally {
+            getLock().readLock().unlock();
+        }
+    }
+
+    @Override
+    public List<Product> findProductsWithParameters(String code, BigDecimal minPrice, BigDecimal maxPrice, int minStock) {
+        getLock().readLock().lock();
+        try {
+            return  getItems().stream()
+                    .filter(product -> product.getCode().contains(code))
+                    .filter(product -> {
+                        if(product.getPrice().compareTo(minPrice) > 0)
+                            return true;
+                        return false;
+                            }
+                    )
+                    .filter(product -> {
+                        if(product.getPrice().compareTo(maxPrice) < 0)
+                            return true;
+                        return false;
+                    } )
+                    .filter(product -> product.getStock() > minStock)
+                    .collect(Collectors.toList());
         } finally {
             getLock().readLock().unlock();
         }

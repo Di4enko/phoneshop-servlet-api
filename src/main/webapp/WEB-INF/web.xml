@@ -94,6 +94,16 @@
     <url-pattern>/order/overview/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>findProducts</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlets.FindProductsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>findProducts</servlet-name>
+    <url-pattern>/products/parametersearch</url-pattern>
+  </servlet-mapping>
+
     <filter>
       <filter-name>dosProtection</filter-name>
       <filter-class>com.es.phoneshop.web.filters.DosFilter</filter-class>
